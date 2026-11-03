@@ -78,6 +78,34 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 .bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:12px}
 .bar i{display:block;height:100%;width:0;background:var(--acc);transition:width .25s}
 #busyS{color:var(--mute);font-size:.88rem;margin-top:6px}
+
+/* Điện thoại */
+@media (max-width:600px){
+ main{padding:18px 12px 40px}
+ h1{font-size:1.5rem}
+ .sub{font-size:.92rem;margin-bottom:16px}
+ #drop{padding:26px 12px}
+ .card{padding:14px;border-radius:12px}
+ .grp{padding:12px}
+ .opts{grid-template-columns:1fr;gap:8px}
+ .opt{padding:12px}
+ .stat{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+ .stat div{min-width:0}
+ .stat strong{font-size:1.35rem}
+ .row{gap:12px}
+ .row #ec{width:100%}
+ fieldset.info{grid-template-columns:1fr;padding:10px 12px}
+ #go{width:100%;padding:14px;font-size:1.05rem}
+ .files a{flex:1 1 calc(50% - 8px);text-align:center}
+ .files a.btn:not(.ghost){flex-basis:100%}
+ th,td{padding:6px 8px;font-size:.9rem}
+ dialog{padding:16px;width:94vw}
+ #dgrid{min-width:0;grid-template-columns:repeat(2,1fr)}
+ .dact{flex-wrap:wrap}
+ .dact button{flex:1}
+ .grp summary .hint .o{display:none}
+}
+@media (max-width:600px){.grp:not([open]) summary .hint::before{content:"Mở"}}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -566,6 +594,7 @@ $('ds').onclick=()=>{const v=[...$('dgrid').querySelectorAll('input')].map(i=>i.
  if(new Set(v).size!==v.length){e.textContent='Các mã đề không được trùng nhau.';e.hidden=false;return}
  maDe=v;$('dlg').close()};
 const dz=$('drop'),fi=$('file');
+if(matchMedia('(pointer:coarse)').matches)$('dropT').textContent='Chạm để chọn file .docx';
 dz.onclick=()=>fi.click();
 dz.onkeydown=e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();fi.click()}};
 fi.onchange=()=>fi.files[0]&&load(fi.files[0]);
