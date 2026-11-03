@@ -6,9 +6,10 @@
 <title>Đảo đề Toán</title>
 <style>
 :root{--bg:#f3f5f8;--card:#fff;--ink:#1b2742;--mute:#5d6b86;--line:#d5dbe6;--acc:#0e7c6b;--accInk:#fff;--warn:#a65b00;
+--or:#c2650a;--orBg:#fdf0e3;--pu:#7c3aed;--puBg:#f1eafe;
 box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121826;--card:#1a2234;--ink:#e6ebf5;--mute:#98a5bf;--line:#2c3750;--acc:#35c2a9;--accInk:#08201b;--warn:#f0b35a}}
-:root[data-theme="dark"]{--bg:#121826;--card:#1a2234;--ink:#e6ebf5;--mute:#98a5bf;--line:#2c3750;--acc:#35c2a9;--accInk:#08201b;--warn:#f0b35a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121826;--card:#1a2234;--ink:#e6ebf5;--mute:#98a5bf;--line:#2c3750;--acc:#35c2a9;--accInk:#08201b;--warn:#f0b35a;--or:#f0a35a;--orBg:#2d2418;--pu:#a78bfa;--puBg:#241e3a}}
+:root[data-theme="dark"]{--bg:#121826;--card:#1a2234;--ink:#e6ebf5;--mute:#98a5bf;--line:#2c3750;--acc:#35c2a9;--accInk:#08201b;--warn:#f0b35a;--or:#f0a35a;--orBg:#2d2418;--pu:#a78bfa;--puBg:#241e3a}
 *{box-sizing:border-box}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 "Be Vietnam Pro","Segoe UI",system-ui,sans-serif}
@@ -27,7 +28,7 @@ input[type=number]{width:84px;padding:7px 9px;border:1px solid var(--line);borde
 button,a.btn{background:var(--acc);color:var(--accInk);border:0;border-radius:8px;padding:11px 20px;font:600 1rem inherit;font-family:inherit;cursor:pointer;text-decoration:none;display:inline-block}
 button:disabled{opacity:.45;cursor:not-allowed}
 button.ghost,a.ghost{background:transparent;color:var(--ink);border:1px solid var(--line);padding:8px 14px;font-weight:500;font-size:.92rem}
-button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
 .stat{display:flex;gap:22px;flex-wrap:wrap;margin:0}
 .stat div{min-width:110px}.stat strong{font-size:1.6rem;display:block;line-height:1.2}.stat span{color:var(--mute);font-size:.88rem}
 .note{color:var(--warn);font-size:.92rem;margin:12px 0 0}
@@ -48,6 +49,35 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 #dgrid label{display:block;color:var(--mute);font-size:.85rem}
 #dgrid input{display:block;width:100%;margin-top:3px;color:var(--ink)}
 .dact{display:flex;gap:10px;justify-content:flex-end}
+
+/* Nhóm tùy chọn */
+.grp{border:1px solid var(--line);border-top:4px solid var(--c);border-radius:12px;padding:14px 16px;margin:0 0 16px;background:var(--card)}
+.grp.or{--c:var(--or);--cb:var(--orBg)}
+.grp.pu{--c:var(--pu);--cb:var(--puBg)}
+.gh,.grp summary{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1.02rem}
+.grp summary{cursor:pointer;list-style:none;user-select:none}
+.grp summary::-webkit-details-marker{display:none}
+.grp summary .hint{margin-left:auto;font-weight:500;font-size:.85rem;color:var(--mute);display:flex;align-items:center;gap:6px}
+.grp summary .hint::after{content:"▾";transition:transform .2s;display:inline-block}
+.grp[open] summary .hint::after{transform:rotate(180deg)}
+.grp:not([open]) summary .hint .c{display:none}
+.grp[open] summary .hint .o{display:none}
+.ic{width:32px;height:32px;border-radius:8px;background:var(--cb);color:var(--c);display:inline-flex;align-items:center;justify-content:center;font-size:1rem}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:14px}
+.opt{align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:10px 12px;cursor:pointer;background:var(--bg);transition:background .15s,border-color .15s}
+.opt:has(input:checked){background:var(--cb);border-color:var(--c)}
+.opt input{margin-top:4px;width:18px;height:18px;accent-color:var(--c);flex:none}
+.opt span{display:flex;flex-direction:column}
+.opt small{color:var(--mute);font-size:.84rem}
+
+/* Màn hình chờ */
+#busy{position:fixed;inset:0;background:rgba(10,15,30,.5);display:flex;align-items:center;justify-content:center;z-index:50;backdrop-filter:blur(2px)}
+#busy .bx{background:var(--card);color:var(--ink);border-radius:14px;padding:26px 30px;text-align:center;width:min(340px,86vw);box-shadow:0 10px 30px rgba(0,0,0,.25)}
+.spin{width:54px;height:54px;margin:0 auto 14px;border:5px solid var(--line);border-top-color:var(--acc);border-radius:50%;animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.bar{height:8px;background:var(--line);border-radius:99px;overflow:hidden;margin-top:12px}
+.bar i{display:block;height:100%;width:0;background:var(--acc);transition:width .25s}
+#busyS{color:var(--mute);font-size:.88rem;margin-top:6px}
 [hidden]{display:none!important}
 </style>
 </head>
@@ -74,16 +104,27 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 <label><input type="radio" name="dg" value="4" checked> 4 số</label>
 <button class="ghost" id="ec" type="button">Sửa mã đề (nếu cần)</button>
 </div>
-<div class="row" style="display: none;">
-<label><input id="oq" type="checkbox" checked> Đảo thứ tự câu hỏi (khi đề không có thẻ &lt;g1&gt;, &lt;g3&gt;)</label>
-<label><input id="oa" type="checkbox" checked> Đảo đáp án A, B, C, D</label>
-<label><input id="ob" type="checkbox"> Đảo ý a), b), c), d) ở câu đúng/sai</label>
-<label><input id="ou" type="checkbox" checked> Xóa gạch chân đáp án đúng (bản cho học sinh)</label>
-<label><input id="od" type="checkbox" checked> Xóa dòng đáp án "A. ..." ở câu trả lời ngắn</label>
-<label><input id="og" type="checkbox"> Đảo thứ tự các nhóm câu (nhóm có # đứng yên)</label>
-<label><input id="on" type="checkbox" checked> Chuẩn hóa định dạng như đề thi (A4, đầu đề, đáp án căn cột, chân trang)</label>
-<label><input id="oc" type="checkbox" checked> Ghi "Mã đề" ở đầu trang</label>
+
+<details class="grp or" id="grpDao">
+<summary><span class="ic">⇄</span>Cách đảo<span class="hint"><span class="o">Bấm để tùy chỉnh</span><span class="c">Thu gọn</span></span></summary>
+<div class="opts">
+<label class="opt"><input id="oq" type="checkbox" checked><span>Đảo thứ tự câu hỏi<small>Khi đề không có thẻ &lt;g1&gt;, &lt;g3&gt;</small></span></label>
+<label class="opt"><input id="oa" type="checkbox" checked><span>Đảo đáp án A, B, C, D<small>Câu trắc nghiệm nhiều lựa chọn</small></span></label>
+<label class="opt"><input id="ob" type="checkbox"><span>Đảo ý a), b), c), d)<small>Câu đúng/sai</small></span></label>
+<label class="opt"><input id="og" type="checkbox"><span>Đảo thứ tự các nhóm câu<small>Nhóm có dấu # đứng yên</small></span></label>
 </div>
+</details>
+
+<div class="grp pu">
+<div class="gh"><span class="ic">¶</span>Trình bày bản in</div>
+<div class="opts">
+<label class="opt"><input id="on" type="checkbox" checked><span>Chuẩn hóa như đề thi<small>A4, đầu đề, đáp án căn cột, chân trang</small></span></label>
+<label class="opt"><input id="ou" type="checkbox" checked><span>Xóa đánh dấu đáp án đúng<small>Gạch chân / chữ đỏ (bản cho học sinh)</small></span></label>
+<label class="opt"><input id="od" type="checkbox" checked><span>Xóa dòng "A. ..." ở câu trả lời ngắn<small>Đáp án vẫn có trong bảng</small></span></label>
+<label class="opt"><input id="oc" type="checkbox" checked><span>Ghi "Mã đề" ở đầu trang<small>Khi không chuẩn hóa định dạng</small></span></label>
+</div>
+</div>
+
 <fieldset class="info"><legend>Thông tin chung</legend>
 <label>Sở/Phòng GD <input id="f1" type="text" placeholder="SỞ GD&amp;ĐT PHÚ THỌ"></label>
 <label>Trường <input id="f2" type="text" placeholder="TRƯỜNG THPT CHUYÊN HOÀNG VĂN THỤ"></label>
@@ -104,6 +145,10 @@ dialog::backdrop{background:rgba(0,0,0,.45)}
 <div class="tw" style="margin-top:10px"><table id="key"></table></div>
 </section>
 </main>
+
+<div id="busy" hidden role="status" aria-live="polite">
+<div class="bx"><div class="spin"></div><b id="busyT">Đang tạo mã đề...</b><div id="busyS">Vui lòng đợi trong giây lát</div><div class="bar"><i id="busyP"></i></div></div>
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
@@ -364,8 +409,21 @@ const getVal = (id, fallback) => {
   return el.value.trim() || el.placeholder || fallback || '';
 };
 
+// Màn hình chờ
+const tick=()=>new Promise(r=>requestAnimationFrame(()=>setTimeout(r,20)));
+const busy=(on,t,s,pct)=>{
+ if(on===false){$('busy').hidden=true;return}
+ $('busy').hidden=false;
+ if(t!=null)$('busyT').textContent=t;
+ if(s!=null)$('busyS').textContent=s;
+ if(pct!=null)$('busyP').style.width=Math.max(0,Math.min(100,pct))+'%';
+};
+
 $('go').onclick=async()=>{
  const btn=$('go');btn.disabled=true;btn.textContent='Đang tạo...';
+ $('err').hidden=true;
+ busy(true,'Đang chuẩn bị...','Vui lòng đợi trong giây lát',0);
+ await tick();
  try{
   fit();const cnt=maDe.length;
   const o={
@@ -389,7 +447,10 @@ $('go').onclick=async()=>{
   const all=new JSZip(),files=$('files');files.innerHTML='';
   const codes=[],keys=[];
   for(let i=0;i<cnt;i++){
-   const code=maDe[i],{out,key}=build(code,o,i);
+   const code=maDe[i];
+   busy(true,`Đang tạo mã đề ${code}`,`Đề ${i+1} / ${cnt}`,i/(cnt+1)*100);
+   await tick();
+   const {out,key}=build(code,o,i);
    zip.file('word/document.xml',out);
    if(o.n){zip.file('word/footerMa.xml',footerXml(code));
     zip.file('word/_rels/document.xml.rels',relsO.replace('</Relationships>',`<Relationship Id="rIdFtMa" Type="${RNS}/footer" Target="footerMa.xml"/></Relationships>`));
@@ -400,6 +461,9 @@ $('go').onclick=async()=>{
    const a=document.createElement('a');a.className='btn ghost';a.textContent='Mã '+code;a.href=URL.createObjectURL(blob);a.download=fn;files.appendChild(a);
    codes.push(code);keys.push(key);
   }
+
+  busy(true,'Đang tạo đáp án và đóng gói...','Sắp xong',cnt/(cnt+1)*100);
+  await tick();
 
   const dapAnFolder = all.folder('Dap_An');
 
@@ -477,8 +541,12 @@ $('go').onclick=async()=>{
   files.prepend(za);
   const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;');
   $('key').innerHTML='<tr><th>Câu</th>'+codes.map(c=>`<th>${c}</th>`).join('')+'</tr>'+keys[0].map((k,i)=>`<tr><td>${k.lab}</td>${keys.map(x=>`<td>${esc(x[i].val)}</td>`).join('')}</tr>`).join('');
+  busy(true,'Hoàn tất!','',100);
+  await new Promise(r=>setTimeout(r,350));
   $('out').hidden=false;
+  $('out').scrollIntoView({behavior:'smooth',block:'start'});
  }catch(e){$('err').textContent='Lỗi khi tạo đề: '+e.message;$('err').hidden=false}
+ busy(false);
  btn.disabled=false;btn.textContent='Tạo mã đề';
 };
 
